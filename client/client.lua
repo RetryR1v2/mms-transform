@@ -1,9 +1,36 @@
 local VORPcore = exports.vorp_core:GetCore()
 local FeatherMenu =  exports['feather-menu'].initiate()
 
+local playerjob = nil
+if Config.Joblock then
+---------------------------------------------------------------------------------
+------------------------------Get Playerjob--------------------------------------
+---------------------------------------------------------------------------------
+Citizen.CreateThread(function()
+    while playerjob == nil do
+        Citizen.Wait(1000)
+        TriggerServerEvent('mms-transform:server:getplayerjob')
+    end
+end)
+
+RegisterNetEvent('mms-transform:client:getplayerjob')
+AddEventHandler('mms-transform:client:getplayerjob',function(job)
+    playerjob = job
+    if playerjob == nil then
+        Citizen.Wait(500)
+    else
+        RegisterCommand(Config.Command, function()
+            TriggerEvent('mms-transform:client:transformmenu')
+        end)
+    end
+end)
+end
+
+if not Config.JobLock then
 RegisterCommand(Config.Command, function()
     TriggerEvent('mms-transform:client:transformmenu')
 end)
+end
 
 local inform = false
 

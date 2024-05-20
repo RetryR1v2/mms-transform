@@ -2,6 +2,14 @@ Config = {}
 
 Config.Command = 'transform'   --/transform in chat
 
+Config.JobLock = true
+
+Config.Jobs= {
+    {JobName = 'job1',},
+    --{JobName = 'job2',},
+    --{JobName = 'job3',},
+}
+
 
 Config.TransformList = {
     {
