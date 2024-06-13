@@ -5,7 +5,7 @@ Config.Command = 'transform'   --/transform in chat
 Config.JobLock = true
 
 Config.Jobs= {
-    {JobName = 'job1',},
+    {JobName = 'testjob',},
     --{JobName = 'job2',},
     --{JobName = 'job3',},
 }

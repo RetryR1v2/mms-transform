@@ -2,13 +2,18 @@ local VORPcore = exports.vorp_core:GetCore()
 local FeatherMenu =  exports['feather-menu'].initiate()
 
 local playerjob = nil
-if Config.Joblock then
----------------------------------------------------------------------------------
-------------------------------Get Playerjob--------------------------------------
----------------------------------------------------------------------------------
-Citizen.CreateThread(function()
+if Config.JobLock then
+RegisterNetEvent('vorp:SelectedCharacter')
+AddEventHandler('vorp:SelectedCharacter', function()
     while playerjob == nil do
-        Citizen.Wait(1000)
+        Citizen.Wait(5000)
+        TriggerServerEvent('mms-transform:server:getplayerjob')
+    end
+end)
+
+Citizen.CreateThread(function ()
+    while playerjob == nil do
+        Citizen.Wait(5000)
         TriggerServerEvent('mms-transform:server:getplayerjob')
     end
 end)
@@ -19,12 +24,23 @@ AddEventHandler('mms-transform:client:getplayerjob',function(job)
     if playerjob == nil then
         Citizen.Wait(500)
     else
-        RegisterCommand(Config.Command, function()
-            TriggerEvent('mms-transform:client:transformmenu')
-        end)
+        for i,v in ipairs(Config.Jobs) do
+            if playerjob == v.JobName then
+                    TriggerEvent('mms-transform:client:registercommand')
+            end
+        end
     end
 end)
 end
+
+RegisterNetEvent('mms-transform:client:registercommand')
+AddEventHandler('mms-transform:client:registercommand',function()
+    RegisterCommand(Config.Command, function()
+        TriggerEvent('mms-transform:client:transformmenu')
+        print('Command Registred')
+    end)
+end)
+
 
 if not Config.JobLock then
 RegisterCommand(Config.Command, function()

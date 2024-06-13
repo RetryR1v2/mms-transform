@@ -8,6 +8,7 @@
 # Chnagelog
 - Initial Release Version 1.1.1
 - 1.1.2 Added Joblock
+- 1.1.3 Joblock Fix
 
 # installation
 
