@@ -37,7 +37,6 @@ RegisterNetEvent('mms-transform:client:registercommand')
 AddEventHandler('mms-transform:client:registercommand',function()
     RegisterCommand(Config.Command, function()
         TriggerEvent('mms-transform:client:transformmenu')
-        print('Command Registred')
     end)
 end)
 
