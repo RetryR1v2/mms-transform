@@ -1,6 +1,7 @@
 Config = {}
 
 Config.Command = 'transform'   --/transform in chat
+Config.defaultlang = 'de_lang'
 
 --- Admin Based System
 
