@@ -3,7 +3,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 game 'rdr3'
 
 description 'mms-transform'
-version '1.1.3'
+version '1.1.4'
 author 'Markus Mueller'
 
 client_scripts {
@@ -16,8 +16,9 @@ server_scripts {
 }
 
 shared_scripts {
-	'@ox_lib/init.lua',
     'config.lua',
+	'shared/locale.lua',
+	'languages/*.lua',
 }
 
 dependency 'vorp_core'

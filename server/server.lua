@@ -29,11 +29,12 @@ local function CheckVersion()
     end)
 end
 
-RegisterServerEvent('mms-transform:server:getplayerjob',function()
+RegisterServerEvent('mms-transform:server:GetPlayerData',function()
     local src = source
     local Character = VORPcore.getUser(src).getUsedCharacter
     local job = Character.job
-    TriggerClientEvent('mms-transform:client:getplayerjob',src,job)
+    local group = Character.group
+    TriggerClientEvent('mms-transform:client:RecivePlayerData',src,job,group)
 end)
 
 RegisterNetEvent('mms-transform:server:rc')

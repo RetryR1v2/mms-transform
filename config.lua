@@ -2,12 +2,24 @@ Config = {}
 
 Config.Command = 'transform'   --/transform in chat
 
-Config.JobLock = true
+--- Admin Based System
 
-Config.Jobs= {
-    {JobName = 'testjob',},
-    --{JobName = 'job2',},
-    --{JobName = 'job3',},
+Config.GroupOnly = true
+
+Config.Groups = {
+    {Group = 'admin' },
+    --{ JobName = 'supporter' },
+    --{ JobName = 'moderator' },
+}
+
+--- JobBaseSystem
+
+Config.JobLock = false
+
+Config.Jobs = {
+    { JobName = 'testjob' },
+    --{ JobName = 'job2' },
+    --{ JobName = 'job3' },
 }
 
 

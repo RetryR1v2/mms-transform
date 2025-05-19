@@ -1,51 +1,63 @@
 local VORPcore = exports.vorp_core:GetCore()
 local FeatherMenu =  exports['feather-menu'].initiate()
 
-local playerjob = nil
-if Config.JobLock then
-RegisterNetEvent('vorp:SelectedCharacter')
-AddEventHandler('vorp:SelectedCharacter', function()
-    while playerjob == nil do
-        Citizen.Wait(5000)
-        TriggerServerEvent('mms-transform:server:getplayerjob')
-    end
-end)
+local PlayerJob = nil
+local PlayerGroup = nil
 
 Citizen.CreateThread(function ()
-    while playerjob == nil do
+    while PlayerJob == nil do
         Citizen.Wait(5000)
-        TriggerServerEvent('mms-transform:server:getplayerjob')
+        TriggerServerEvent('mms-transform:server:GetPlayerData')
     end
 end)
 
-RegisterNetEvent('mms-transform:client:getplayerjob')
-AddEventHandler('mms-transform:client:getplayerjob',function(job)
-    playerjob = job
-    if playerjob == nil then
-        Citizen.Wait(500)
-    else
-        for i,v in ipairs(Config.Jobs) do
-            if playerjob == v.JobName then
-                    TriggerEvent('mms-transform:client:registercommand')
+RegisterNetEvent('mms-transform:client:RecivePlayerData')
+AddEventHandler('mms-transform:client:RecivePlayerData',function(job,group)
+    PlayerJob = job
+    PlayerGroup = group
+end)
+
+
+RegisterCommand(Config.Command, function()
+    TriggerEvent('mms-transform:client:OpenTransformMenu')
+end)
+
+RegisterNetEvent('mms-transform:client:OpenTransformMenu')
+AddEventHandler('mms-transform:client:OpenTransformMenu',function()
+    if PlayerJob ~= nil and PlayerGroup ~= nil then
+        local IHaveAccess = false
+        -- Group Check
+        if Config.GroupOnly then
+            for h,v in ipairs(Config.Groups) do
+                if PlayerGroup == v.Group then
+                    IHaveAccess = true
+                end
             end
         end
+        -- JobCheck
+        if Config.JobLock then
+            for h,v in ipairs(Config.Jobs) do
+                if PlayerJob == v.JobName then
+                    IHaveAccess = true
+                end
+            end
+        end
+        -- If Both are false in config all can Access so we do this
+        if not Config.GroupOnly and not Config.JobLock then
+            IHaveAccess = true
+        end
+        if IHaveAccess then
+            AnimalTransform:Open({
+                startupPage = AnimalTransformPage1,
+            })
+        else
+            VORPcore.NotifyRightTip(_U('NoAccessToTransformMenu'),5000)
+        end
+    else
+        VORPcore.NotifyRightTip(_U('UserDataNotLoaded'),5000)
     end
 end)
-end
 
-RegisterNetEvent('mms-transform:client:registercommand')
-AddEventHandler('mms-transform:client:registercommand',function()
-    RegisterCommand(Config.Command, function()
-        TriggerEvent('mms-transform:client:transformmenu')
-    end)
-end)
-
-
-if not Config.JobLock then
-RegisterCommand(Config.Command, function()
-    TriggerEvent('mms-transform:client:transformmenu')
-end)
-end
 
 local inform = false
 
@@ -72,7 +84,7 @@ AnimalTransform = FeatherMenu:RegisterMenu('feather:character:transformmenu', {
 })
 AnimalTransformPage1 = AnimalTransform:RegisterPage('first:transform')
 AnimalTransformPage1:RegisterElement('header', {
-    value = 'Transformations Menü',
+    value = _U('MenuHeader'),
     slot = "header",
     style = {
         ['color'] = 'orange',
@@ -99,7 +111,7 @@ AnimalTransformPage1:RegisterElement('button', {
 end)
 end
 AnimalTransformPage1:RegisterElement('button', {
-    label = "Werde Wieder Mensch",
+    label = _U('BackToHuman'),
     style = {
         ['background-color'] = '#FF8C00',
         ['color'] = 'orange',
@@ -109,7 +121,7 @@ AnimalTransformPage1:RegisterElement('button', {
     TriggerEvent('mms-transform:client:rc')
 end)
 AnimalTransformPage1:RegisterElement('button', {
-    label = "Transformations Menü Schließen",
+    label = _U('CloseMenu'),
     style = {
         ['background-color'] = '#FF8C00',
         ['color'] = 'orange',
@@ -120,7 +132,7 @@ AnimalTransformPage1:RegisterElement('button', {
     })
 end)
 AnimalTransformPage1:RegisterElement('subheader', {
-    value = "Transformations Menü",
+    value =_U('MenuHeader'),
     slot = "footer",
     style = {
         ['color'] = 'orange',
@@ -134,13 +146,6 @@ AnimalTransformPage1:RegisterElement('line', {
 })
 
 end)
-
-RegisterNetEvent('mms-transform:client:transformmenu',function()
-    AnimalTransform:Open({
-        startupPage = AnimalTransformPage1,
-    })
-end)
-
 
 RegisterNetEvent('mms-transform:client:dothetransformation')
 AddEventHandler('mms-transform:client:dothetransformation',function(model,name)
