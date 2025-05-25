@@ -247,6 +247,7 @@ AddEventHandler('mms-transform:client:rc',function()
     inform = false
     Citizen.InvokeNative(0xE4CB5A3F18170381, PlayerId(), 1.0)
     ExecuteCommand('rc')
+    Citizen.Wait(2000)
     TriggerServerEvent('mms-transform:server:rc')
 end)
 

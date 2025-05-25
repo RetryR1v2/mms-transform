@@ -13,6 +13,7 @@
 - 1.1.4 Added Group Lock
 - Reworked Client
 - Added Translation Files
+- 1.1.5 You Should be Back at Max Health after go back to Human
 
 # installation
 

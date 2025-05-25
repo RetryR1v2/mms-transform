@@ -41,7 +41,7 @@ RegisterNetEvent('mms-transform:server:rc')
 AddEventHandler('mms-transform:server:rc',function ()
     local src = source
     Citizen.Wait(2000)
-    TriggerClientEvent('vorp:heal', src)
+    VORPcore.Player.Heal(src)
 end)
 
 RegisterNetEvent("legado:attack")
