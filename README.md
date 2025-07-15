@@ -14,6 +14,8 @@
 - Reworked Client
 - Added Translation Files
 - 1.1.5 You Should be Back at Max Health after go back to Human
+- 1.1.6 Players Get Back their Ammo After go BAck to Human
+- If they Use /rc Instead of the Menu then they need to run the GiveBackAmmo Command
 
 # installation
 

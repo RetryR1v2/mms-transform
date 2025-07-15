@@ -1,5 +1,5 @@
 local VORPcore = exports.vorp_core:GetCore()
-
+local UserAmmo = nil
 -----------------------------------------------------------------------
 -- version checker
 -----------------------------------------------------------------------
@@ -42,6 +42,21 @@ AddEventHandler('mms-transform:server:rc',function ()
     local src = source
     Citizen.Wait(2000)
     VORPcore.Player.Heal(src)
+end)
+
+RegisterServerEvent('mms-transform:server:SaveAmmo',function()
+    local src = source
+    UserAmmo = exports.vorp_inventory:getUserAmmo(src)
+    TriggerClientEvent('mms-transform:client:SaveMyAmmo',src,UserAmmo)
+end)
+
+RegisterServerEvent('mms-transform:server:GiveBackAmmo',function(MyAmmo)
+    local src = source
+    exports.vorp_inventory:removeAllUserAmmo(src)
+    local AmmoData = json.encode(MyAmmo)
+    for h,v in ipairs(AmmoData) do
+        exports.vorp_inventory:addBullets(src, h, v)
+    end
 end)
 
 RegisterNetEvent("legado:attack")

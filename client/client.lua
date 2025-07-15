@@ -3,6 +3,7 @@ local FeatherMenu =  exports['feather-menu'].initiate()
 
 local PlayerJob = nil
 local PlayerGroup = nil
+local MyAmmo = nil
 
 Citizen.CreateThread(function ()
     while PlayerJob == nil do
@@ -149,7 +150,10 @@ end)
 
 RegisterNetEvent('mms-transform:client:dothetransformation')
 AddEventHandler('mms-transform:client:dothetransformation',function(model,name)
-
+        if Config.SaveAmmo then
+            TriggerServerEvent('mms-transform:server:SaveAmmo')
+        end
+        Citizen.Wait(1000)
         local modelHash = GetHashKey(model)     ---- is horse model but tried other models too Like A_C_Cow
             RequestModel(modelHash)
             while not HasModelLoaded(modelHash) do
@@ -158,21 +162,20 @@ AddEventHandler('mms-transform:client:dothetransformation',function(model,name)
         
 
         local player = PlayerId()
-        Citizen.Wait(250)
         Citizen.InvokeNative(0xED40380076A31506, player, modelHash, false) -- SetPlayerModel
-        Citizen.Wait(250)
         Citizen.InvokeNative(0x283978A15512B2FE, PlayerPedId(), false)  -- SetRandomOutfitVariation
-        Citizen.Wait(250)
         Citizen.InvokeNative(0x77FF8D35EEC6BBC4,PlayerPedId(),4,0)
-        Citizen.Wait(250)
         SetEntityMaxHealth(PlayerPedId(), 1000)
-        Citizen.Wait(250)
         SetEntityHealth(PlayerPedId(), 1000)
-        Citizen.Wait(250)
         SetModelAsNoLongerNeeded(model)
         inform = true
         TriggerEvent('mms-transform:client:timer',model,name)
         
+end)
+
+RegisterNetEvent('mms-transform:client:SaveMyAmmo')
+AddEventHandler('mms-transform:client:SaveMyAmmo',function(UserAmmo)
+    MyAmmo = UserAmmo
 end)
 
 function SpawnFX(dict, name)
@@ -249,8 +252,18 @@ AddEventHandler('mms-transform:client:rc',function()
     ExecuteCommand('rc')
     Citizen.Wait(2000)
     TriggerServerEvent('mms-transform:server:rc')
+    if Config.SaveAmmo then
+        TriggerServerEvent('mms-transform:server:GiveBackAmmo',MyAmmo)
+    end
 end)
 
+RegisterCommand(Config.GiveBackAmmoCommand, function()
+    if MyAmmo ~= nil then
+        if Config.SaveAmmo then
+            TriggerServerEvent('mms-transform:server:GiveBackAmmo',MyAmmo)
+        end
+    end
+end)
 
 function SetMonModel(name)
 	local model = GetHashKey(name)

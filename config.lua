@@ -3,6 +3,11 @@ Config = {}
 Config.Command = 'transform'   --/transform in chat
 Config.defaultlang = 'de_lang'
 
+-- AMMO Settings
+
+Config.SaveAmmo = true -- If True it Saves the ammo of Player before Transformation
+Config.GiveBackAmmoCommand = 'GiveBackAmmo' -- if the player use /rc Instead of the Menu to get Back to Human
+
 --- Admin Based System
 
 Config.GroupOnly = true
