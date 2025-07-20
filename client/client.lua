@@ -176,6 +176,8 @@ end)
 RegisterNetEvent('mms-transform:client:SaveMyAmmo')
 AddEventHandler('mms-transform:client:SaveMyAmmo',function(UserAmmo)
     MyAmmo = UserAmmo
+    print('Client Print Saved User Ammo: ' .. json.encode(MyAmmo))
+    --print(json.encode(MyAmmo))
 end)
 
 function SpawnFX(dict, name)

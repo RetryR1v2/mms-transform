@@ -47,11 +47,13 @@ end)
 RegisterServerEvent('mms-transform:server:SaveAmmo',function()
     local src = source
     UserAmmo = exports.vorp_inventory:getUserAmmo(src)
+    print('Server Print Save User Ammo: ' .. json.encode(UserAmmo))
     TriggerClientEvent('mms-transform:client:SaveMyAmmo',src,UserAmmo)
 end)
 
 RegisterServerEvent('mms-transform:server:GiveBackAmmo',function(MyAmmo)
     local src = source
+    print('Server Print Give Back User Ammo: ' .. json.encode(MyAmmo))
     exports.vorp_inventory:removeAllUserAmmo(src)
     local AmmoData = json.encode(MyAmmo)
     for h,v in ipairs(AmmoData) do
