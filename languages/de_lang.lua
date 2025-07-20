@@ -4,5 +4,4 @@ Locales["de_lang"] = {
     MenuHeader = 'Transformations Menü',
     CloseMenu = 'Transformations Menü Schließen',
     BackToHuman = 'Werde Wieder Mensch',
-    
 }

@@ -53,12 +53,16 @@ end)
 
 RegisterServerEvent('mms-transform:server:GiveBackAmmo',function(MyAmmo)
     local src = source
+    local Character = VORPcore.getUser(src).getUsedCharacter
+    local CharIdent = Character.charIdentifier
     print('Server Print Give Back User Ammo: ' .. json.encode(MyAmmo))
     exports.vorp_inventory:removeAllUserAmmo(src)
+    Citizen.Wait(5000)
     local AmmoData = json.encode(MyAmmo)
     for h,v in ipairs(AmmoData) do
         exports.vorp_inventory:addBullets(src, h, v)
     end
+    MySQL.update('UPDATE `characters` SET ammo = ?  WHERE charidentifier = ?',{AmmoData, CharIdent})
 end)
 
 RegisterNetEvent("legado:attack")
