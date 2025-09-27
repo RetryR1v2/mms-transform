@@ -27,5 +27,5 @@
 
 # CREDITS
 - Discord markusmueller
-- Animal Atacks From Byte.py legados
-- https://github.com/RetryR1v2 
+- Animal Atacks From [KIBOOK](https://github.com/kibook/redm-fixanimals/blob/master/client.lua) 
+- https://github.com/RetryR1v2/mms-transform
